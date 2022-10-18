@@ -15,11 +15,6 @@ struct product
 	float amount;
 };
 
-struct addmin
-{
-
-};
-
 struct costumer
 {
 
@@ -27,6 +22,10 @@ struct costumer
 struct employee
 {
 	char username[20], pass[20];
+};
+struct addmin
+{
+	struct employee employee;
 };
 
 void gotoxy(short x, short y); // here we declare the gotoxy function//
@@ -39,14 +38,23 @@ void update_product();
 void delete_product();
 void view_product();
 void add_customer();
-
+void lis_costumer();
+void update_costumer();
+void seach_customer();
 
 int main()
 {
 	char ch;
-	   
+	 
 	puts("\nView Pro");
-	view_product();
+	lis_costumer();
+	puts("\nSearch Pro");
+	seach_customer();
+	puts("\nUpdate Pro");
+	update_costumer();
+	puts("\nView Pro");
+	lis_costumer();
+
 
 	getch();
 	return 0;
@@ -142,16 +150,89 @@ void costomer()
 }
 void add_costomer()
 {
-	struct employee info;
+	struct addmin info;
 	FILE *Fpl;
 	Fpl = fopen("information_login.txt", "ab+");
+	if(Fpl == NULL)
+   {
+      printf("Error!");   
+      exit(1);             
+   }
 	printf("Enter User Name: ");
-	gets(info.username);
+	gets(info.employee.username);
 	printf("Enter Password : ");
-	scanf("%s", &info.pass);
+	scanf("%s", &info.employee.pass);
 	fwrite(&info, sizeof(info), 1, Fpl);
 	fclose(Fpl);
 }
+void lis_costumer(){
+	struct addmin info;
+	FILE *Fpl;
+	int i=1;
+	Fpl = fopen("information_login.txt", "rb+");
+	if(Fpl == NULL)
+   {
+      printf("Error!");   
+      exit(1);             
+   }
+	while (fread(&info,sizeof(info),1,Fpl)==1)
+	{	
+		printf("Roll: %d\n",i);
+		printf("User Name: %s\n",info.employee.username);
+		printf("User Password: %s\n",info.employee.pass);
+		i++;
+	}
+	fclose(Fpl);
+
+}
+void seach_customer(){
+	struct employee info;
+	FILE *Fpl;
+	char seach_name[50];
+	printf("Search Name Costumer : "); gets(seach_name);
+	Fpl = fopen("information_login.txt", "rb+");
+	if(Fpl == NULL)
+   {
+      printf("Error!");   
+      exit(1);             
+   }
+	while (fread(&info,sizeof(info),1,Fpl)==1)
+	{	
+		if (strcmp(info.username,seach_name)==0)
+		{
+			printf("User Name: %s\n",info.username);
+			printf("User Password: %s\n",info.pass);
+		}
+	}
+	fclose(Fpl);
+}
+void update_costumer(){
+	struct employee info;
+	FILE *Fpl;
+	char seach_name[50];
+	printf("Search Name Costumer : "); gets(seach_name);
+	Fpl = fopen("information_login.txt", "rb+");
+	if(Fpl == NULL)
+   {
+      printf("Error!");   
+      exit(1);             
+   }
+	while (fread(&info,sizeof(info),1,Fpl)==1)
+	{	
+		if (strcmp(info.username,seach_name)==0)
+		{
+			printf("User Name: %s\n",info.username);
+			printf("User Password: %s\n",info.pass);
+			puts("\n_______________");
+			printf("User Name: "); gets(info.username);
+			printf("User Password: "); scanf("%s",&info.pass);
+			fseek(Fpl ,sizeof(info),SEEK_CUR);
+            fwrite(&info,sizeof(info),1,Fpl);
+		}
+	}
+	fclose(Fpl);
+}
+
 void login()
 {
 	FILE *Fpl;
@@ -214,7 +295,7 @@ void view_product(){
       printf("Error!");   
       exit(1);             
    }
-	while (fread(&pd,sizeof(pd),1,fp))
+	while (fread(&pd,sizeof(pd),1,fp)==1)
 	{
 		/* code */
 		printf("%d\t\t%s\t\t%d\t\t%.2f\t\t\t%.3f\n",pd.pd_code,pd.pd_name,pd.pd_qty,pd.price,pd.amount);
@@ -227,3 +308,4 @@ void gotoxy(short x, short y)
 	COORD pos = {x, y};
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
 }
+
