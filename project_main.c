@@ -28,6 +28,7 @@ struct addmin
 	struct employee employee;
 };
 
+
 void gotoxy(short x, short y); // here we declare the gotoxy function//
 void admin();
 void costomer();
@@ -41,11 +42,19 @@ void add_customer();
 void lis_costumer();
 void update_costumer();
 void seach_customer();
+<<<<<<< HEAD
+=======
+
+>>>>>>> 9f078ec78e52c8030a076e675946469e9a088188
 
 int main()
 {
 	char ch;
+<<<<<<< HEAD
 	 
+=======
+	add_costomer();  
+>>>>>>> 9f078ec78e52c8030a076e675946469e9a088188
 	puts("\nView Pro");
 	lis_costumer();
 	puts("\nSearch Pro");
@@ -166,7 +175,11 @@ void add_costomer()
 	fclose(Fpl);
 }
 void lis_costumer(){
+<<<<<<< HEAD
 	struct addmin info;
+=======
+	struct employee info;
+>>>>>>> 9f078ec78e52c8030a076e675946469e9a088188
 	FILE *Fpl;
 	int i=1;
 	Fpl = fopen("information_login.txt", "rb+");
@@ -177,9 +190,15 @@ void lis_costumer(){
    }
 	while (fread(&info,sizeof(info),1,Fpl)==1)
 	{	
+<<<<<<< HEAD
 		printf("Roll: %d\n",i);
 		printf("User Name: %s\n",info.employee.username);
 		printf("User Password: %s\n",info.employee.pass);
+=======
+		printf("Roll: %d",i);
+		printf("User Name: %s\n",info.username);
+		printf("User Password: %s\n",info.pass);
+>>>>>>> 9f078ec78e52c8030a076e675946469e9a088188
 		i++;
 	}
 	fclose(Fpl);
@@ -226,8 +245,12 @@ void update_costumer(){
 			puts("\n_______________");
 			printf("User Name: "); gets(info.username);
 			printf("User Password: "); scanf("%s",&info.pass);
+<<<<<<< HEAD
 			fseek(Fpl ,sizeof(info),SEEK_CUR);
             fwrite(&info,sizeof(info),1,Fpl);
+=======
+
+>>>>>>> 9f078ec78e52c8030a076e675946469e9a088188
 		}
 	}
 	fclose(Fpl);
