@@ -6,6 +6,7 @@
 #include <windows.h>
 
 int n, i, j, k, l;
+
 struct product
 {
 	char pd_name[20];
@@ -37,6 +38,7 @@ void view_product();
 void search_product();
 void update_product();
 void delete_product();
+void Customers_admin();
 void add_customer();
 void lis_costumer();
 void update_costumer();
@@ -50,9 +52,9 @@ void menu_admmin();
 int main()
 {
 	char ch;
-	costomer();
-	menu_stoke_costumer();
+	system("Cls");
 	puts("\n____________________");
+	login();
 	getch();
 	return 0;
 }
@@ -112,7 +114,7 @@ ag:
 	{
 	case 1:
 		system("Cls");
-		printf("Customers");
+		Customers_admin();
 		getch();
 		goto ag;
 	case 2:
@@ -264,8 +266,70 @@ void menu_stoke_costumer()
 
 	getch();
 }
+void Customers_admin(){
+	char ch;
+	int choice;
+	printf("\nManage Customer\n");
+	do
+	{
+		system("Cls");
+		printf("\n\n\n\t\t\t\t     1. add Costumer\n");
+		printf("\t\t\t\t     2. List Costumer\n");
+		printf("\t\t\t\t     3. Update Costumer Info\n");
+		printf("\t\t\t\t     4. Search Costumer Info\n");
+		printf("\t\t\t\t     5. Ban or Delete Costumer\n");
+		printf("\t\t\t\t     99. back\n");
+		printf("\t\t\t\t     0. Exit\n");
+		printf("\t\t\t\t    _____________________\n");
+		printf("\t\t\t\t     ");
+		scanf("\t\t\t\t    %d", &choice);
+		switch (choice)
+		{
+		case 1:
+			system("Cls");
+			add_costomer();
+			getch();
+			break;
+		case 2:
+			/* code */
+			system("Cls");
+			lis_costumer();
+			getch();
+			break;
+		case 3:
+			/* code */
+			system("Cls");
+			update_costumer();
+			getch();
+			break;
+		case 4:
+			/* code */
+			system("Cls");
+			seach_customer();
+			getch();
+			break;
+		case 5:
+			/* code */
+			system("Cls");
+			delete_customer();
+			getch();
+			break;
+		case 99:
+			/* code */
+			break;
+		
+		default:
+			break;
+		}
+		
+		printf("Press enter for continu<<>>");
+		getch()==ch;
+	} while (ch==13);
+	
+}
 void add_costomer()
 {
+	char ch;
 	struct addmin info;
 	FILE *Fpl;
 	Fpl = fopen("information_login.txt", "ab+");
@@ -274,12 +338,20 @@ void add_costomer()
 		printf("Error!");
 		exit(1);
 	}
-	printf("Enter User Name: ");
-	gets(info.employee.username);
-	printf("Enter Password : ");
-	scanf("%s", &info.employee.pass);
-	fwrite(&info, sizeof(info), 1, Fpl);
-	fclose(Fpl);
+	do
+	{
+		/* code */
+		printf("Enter User Name: ");
+		fflush(stdin);
+		gets(info.employee.username);
+		printf("Enter Password : ");
+		scanf("%s", &info.employee.pass);
+		fwrite(&info, sizeof(info), 1, Fpl);
+		fclose(Fpl);
+		printf("Press any key 'Y' : ");
+		fflush(stdin);
+		scanf("%c", &ch);
+	} while (ch == 'Y' || ch == 'y');
 }
 void lis_costumer()
 {
@@ -414,31 +486,49 @@ void login()
 {
 	FILE *Fpl;
 	struct employee info;
-	printf("Enter User Name: ");
-	gets(info.username);
-	printf("Enter Password : ");
-	scanf("%s", &info.pass);
-	Fpl = fopen("information_login.txt", "rb+");
-	if (Fpl == NULL)
+	char username[50], pass[50], ch;
+	do
 	{
-		printf("Error!");
-		exit(1);
-	}
-	if (strcmp(info.username, "admin") == 0 && strcmp(info.pass, "admin") == 0)
-	{
-		fclose(Fpl);
-		admin();
-	}
-	else if (strcmp(info.username, "user") == 0 && strcmp(info.pass, "user") == 0)
-	{
-		fclose(Fpl);
-		costomer();
-	}
-	else
-	{
-		fclose(Fpl);
-		printf("Login Fail");
-	}
+		/* code 
+		system("Cls");*/
+
+		printf("Enter User Name: ");
+		fflush(stdin);
+		gets(username);
+		printf("Enter Password : ");
+		scanf("%s", &pass);
+		Fpl = fopen("information_login.txt", "rb+");
+
+		if (strcmp(username, "admin") == 0 && strcmp(pass, "123") == 0)
+		{
+			fclose(Fpl);
+			printf("Login Successfully..!");
+			getch();
+			admin();
+		}
+		if (Fpl == NULL)
+		{
+			printf("File Error!");
+			exit(1);
+		}
+		while (fread(&info, sizeof(info), 1, Fpl) == 1)
+		{
+
+			if (strcmp(info.username, username) == 0 && strcmp(info.pass, pass) == 0)
+			{
+				fclose(Fpl);
+				printf("Login Successfully..!");
+				getch();
+				costomer();
+			}
+			else
+			{
+				fclose(Fpl);
+				printf("Login Fail");
+			}
+		}
+
+	} while (ch == 'Y' || ch == 'y');
 }
 
 void add_product()
